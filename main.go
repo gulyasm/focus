@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 )
 
@@ -18,7 +19,10 @@ func main() {
 		usage()
 		exit(1)
 	}
-	fs := NewFocusStore("test.db")
+	fs, err := NewFocusStore("test.db")
+	if err != nil {
+		log.Fatal(err)
+	}
 	cmd := os.Args[1]
 	var err error
 	switch cmd {
