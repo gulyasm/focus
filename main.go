@@ -4,11 +4,22 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"strings"
+	"os/user"
 	"time"
 
 	"github.com/apcera/termtables"
 )
+
+const DEFAULT_DB_NAME = "focus.db"
+
+func getDBPath() (string, error) {
+	u, err := user.Current()
+	if err != nil {
+		return "", err
+	}
+	s := u.HomeDir + "/" + DEFAULT_DB_NAME
+	return s, err
+}
 
 func usage(err string) {
 	fmt.Println("Commands: add, list, today")
@@ -56,17 +67,20 @@ func printElements(elements []Element) {
 		table.AddRow(r.Name, d)
 		td += d
 	}
-	fmt.Println(strings.Repeat("=", 30))
+	fmt.Println(table.Render())
 	fmt.Println("Total duration:", td)
 
-	fmt.Println(table.Render())
 }
 func main() {
 	if len(os.Args) < 2 {
 		usage("Missing cmd")
 		exit(1)
 	}
-	fs, err := NewFocusStore("test.db")
+	path, err := getDBPath()
+	if err != nil {
+		log.Fatal(err)
+	}
+	fs, err := NewFocusStore(path)
 	if err != nil {
 		log.Fatal(err)
 	}
