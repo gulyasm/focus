@@ -22,7 +22,7 @@ func getDBPath() (string, error) {
 }
 
 func usage(err string) {
-	fmt.Println("Commands: add, list, today, yesterday, stop")
+	fmt.Println("Commands: start, stop, list, today, yesterday")
 	fmt.Println("Error: " + err)
 }
 
@@ -92,9 +92,9 @@ func main() {
 	}
 	cmd := os.Args[1]
 	switch cmd {
-	case "add":
+	case "start":
 		name := os.Args[2]
-		err = fs.Add(name)
+		err = fs.Start(name)
 	case "list":
 		err = cmdList(fs)
 	case "today":

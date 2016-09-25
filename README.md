@@ -2,9 +2,13 @@
 ## Build
 ![](https://travis-ci.org/gulyasm/focus.svg?branch=master)
 ## Usage
- - `focus add "Coding kernel-bug"`
+ - `focus start "Coding kernel-bug"`
 
 Add a new item. Clock is ticking from this point.
+
+ - `focus stop`
+
+Stops the currently running element
 
  - `focus now`
 
@@ -38,9 +42,9 @@ vagrant up && vagrant ssh
 On the vagrant machine you can build and run Focus.
 ```bash
 go build
-./focus add Coding...
-./focus add Coding...
-./focus add Coding...
+./focus start Coding...
+./focus start Coding...
+./focus start Coding...
 ./focus list
 ```
 ## Contribution

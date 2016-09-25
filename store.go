@@ -180,7 +180,7 @@ func (fs FocusStore) Stop() error {
 	return err
 }
 
-func (fs FocusStore) Add(name string) error {
+func (fs FocusStore) Start(name string) error {
 	db, err := fs.open()
 	if err != nil {
 		return err
