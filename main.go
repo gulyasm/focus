@@ -22,8 +22,53 @@ func getDBPath() (string, error) {
 }
 
 func usage(err string) {
-	fmt.Println("Commands: start, stop, list, today, yesterday")
 	fmt.Println("Error: " + err)
+	helpMessage := `
+Usage:
+focus COMMAND OPTIONS
+
+COMMANDS
+	now
+		Prints the currently running task
+
+		EXAMPLE:
+		focus now
+
+	start
+		Start a new task and stops any running. The start time will be automatically the
+		time when the task is added.
+
+		OPTIONS:
+		The name of the task.
+
+		EXAMPLE:
+		focus start "Coding Focus interface"
+
+	stop
+		Stops the currently runnnig task.
+
+		EXAMPLE:
+		focus stop
+
+	list
+		List ALL tasks.
+
+		EXAMPLE:
+		focus list
+
+	today
+		List tasks started today with duration.
+
+		EXAMPLE:
+		focus today
+
+	yesterday
+		List tasks started yesterday with duration.
+
+		EXAMPLE:
+		focus yesterday
+`
+	fmt.Println(helpMessage)
 }
 
 func exit(code int) {
