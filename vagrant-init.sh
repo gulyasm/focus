@@ -14,6 +14,7 @@ if [ -z $GOSET ]
     source /home/vagrant/.profile
     cd /home/vagrant/gocode/src/github.com/gulyasm/focus
     go get
+    go get -u github.com/golang/lint/golint
     sudo chown -R vagrant:vagrant /home/vagrant/gocode
     cd -
 fi

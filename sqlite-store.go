@@ -8,10 +8,15 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
+// SQLiteStore stores Elements in an SQLite database persisted to
+// the disk.
 type SQLiteStore struct {
 	path string
 }
 
+// NewSQLiteStore returns an SQLiteStore with a backed SQLite DB on the
+// provided path. The DB is initialized if it didn't exist before.
+// Already existing DB is not touched.
 func NewSQLiteStore(path string) (Store, error) {
 	fs := SQLiteStore{path}
 	err := fs.initDB()
@@ -36,6 +41,8 @@ func (fs SQLiteStore) initDB() error {
 	return err
 }
 
+// ListDay returns the elements for a given day. The day parameter shouldn't have to be
+// midnight or any other specific time. Any time on the given date is fine.
 func (fs SQLiteStore) ListDay(day time.Time) ([]Element, error) {
 	result := []Element{}
 	db, err := fs.open()
@@ -52,7 +59,7 @@ func (fs SQLiteStore) ListDay(day time.Time) ([]Element, error) {
 		e := Element{}
 		var start, end string
 		if err := rows.Scan(
-			&e.Id,
+			&e.ID,
 			&e.Name,
 			&start,
 			&end,
@@ -60,13 +67,13 @@ func (fs SQLiteStore) ListDay(day time.Time) ([]Element, error) {
 			return result, err
 		}
 		if start != "" {
-			e.Start, err = time.Parse(ISO8601, start)
+			e.Start, err = time.Parse(iso8601, start)
 			if err != nil {
 				log.Println("Failed to parse time: ", err.Error())
 			}
 		}
 		if end != "" {
-			e.End, err = time.Parse(ISO8601, end)
+			e.End, err = time.Parse(iso8601, end)
 			if err != nil {
 				log.Println("Failed to parse time: ", err.Error())
 			}
@@ -78,6 +85,7 @@ func (fs SQLiteStore) ListDay(day time.Time) ([]Element, error) {
 	return result, nil
 }
 
+// Now returns the running task. If there is no running task the ErrNoElement error is returned.
 func (fs SQLiteStore) Now() (Element, error) {
 	e := Element{}
 	db, err := fs.open()
@@ -87,14 +95,14 @@ func (fs SQLiteStore) Now() (Element, error) {
 	defer db.Close()
 	var start string
 	row := db.QueryRow("SELECT Id, Name, Start FROM Elements WHERE End=''")
-	if err = row.Scan(&e.Id, &e.Name, &start); err != nil {
+	if err = row.Scan(&e.ID, &e.Name, &start); err != nil {
 		if err == sql.ErrNoRows {
 			return e, ErrNoElement
 		}
 		return e, err
 	}
 	if start != "" {
-		e.Start, err = time.Parse(ISO8601, start)
+		e.Start, err = time.Parse(iso8601, start)
 		if err != nil {
 			log.Println("Failed to parse time: ", err.Error())
 		}
@@ -102,6 +110,7 @@ func (fs SQLiteStore) Now() (Element, error) {
 	return e, nil
 }
 
+// List returns all elements in the store.
 func (fs SQLiteStore) List() ([]Element, error) {
 	result := []Element{}
 	db, err := fs.open()
@@ -118,7 +127,7 @@ func (fs SQLiteStore) List() ([]Element, error) {
 		e := Element{}
 		var start, end string
 		if err := rows.Scan(
-			&e.Id,
+			&e.ID,
 			&e.Name,
 			&start,
 			&end,
@@ -126,13 +135,13 @@ func (fs SQLiteStore) List() ([]Element, error) {
 			return result, err
 		}
 		if start != "" {
-			e.Start, err = time.Parse(ISO8601, start)
+			e.Start, err = time.Parse(iso8601, start)
 			if err != nil {
 				log.Println("Failed to parse time: ", err.Error())
 			}
 		}
 		if end != "" {
-			e.End, err = time.Parse(ISO8601, end)
+			e.End, err = time.Parse(iso8601, end)
 			if err != nil {
 				log.Println("Failed to parse time: ", err.Error())
 			}
@@ -144,6 +153,7 @@ func (fs SQLiteStore) List() ([]Element, error) {
 	return result, nil
 }
 
+// Stop stops the currently running task
 func (fs SQLiteStore) Stop() error {
 	db, err := fs.open()
 	if err != nil {
@@ -153,13 +163,14 @@ func (fs SQLiteStore) Stop() error {
 
 	now := time.Now().UTC()
 
-	_, err = db.Exec("UPDATE Elements SET End=? WHERE END=''", now.Format(ISO8601))
+	_, err = db.Exec("UPDATE Elements SET End=? WHERE END=''", now.Format(iso8601))
 	if err != nil {
 		log.Println("Failed to update DB.", err.Error())
 	}
 	return err
 }
 
+// Start adds a new Element and start it.
 func (fs SQLiteStore) Start(name string) error {
 	db, err := fs.open()
 	if err != nil {
@@ -174,7 +185,7 @@ func (fs SQLiteStore) Start(name string) error {
 	if err != nil {
 		return err
 	}
-	_, err = tx.Exec("UPDATE Elements SET End=? WHERE END=''", now.Format(ISO8601))
+	_, err = tx.Exec("UPDATE Elements SET End=? WHERE END=''", now.Format(iso8601))
 	if err != nil {
 		log.Println("Failed to update DB.", err.Error())
 		err = tx.Rollback()
@@ -184,7 +195,7 @@ func (fs SQLiteStore) Start(name string) error {
 	_, err = tx.Exec(
 		"INSERT INTO Elements(Name, Start) VALUES(?, ?)",
 		name,
-		now.Format(ISO8601))
+		now.Format(iso8601))
 	if err != nil {
 		log.Println("Failed to update DB.", err.Error())
 		err = tx.Rollback()
