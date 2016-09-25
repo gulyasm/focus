@@ -30,8 +30,9 @@ func exit(code int) {
 	os.Exit(code)
 }
 
-func cmdToday(fs FocusStore) error {
-	results, err := fs.ListToday()
+func cmdYesterday(s Store) error {
+	yesterday := time.Now().AddDate(0, 0, -1)
+	results, err := s.ListDay(yesterday)
 	if err != nil {
 		return err
 	}
@@ -39,8 +40,18 @@ func cmdToday(fs FocusStore) error {
 	return nil
 }
 
-func cmdNow(fs FocusStore) error {
-	result, err := fs.Now()
+func cmdToday(s Store) error {
+	today := time.Now()
+	results, err := s.ListDay(today)
+	if err != nil {
+		return err
+	}
+	printElements(results)
+	return nil
+}
+
+func cmdNow(s Store) error {
+	result, err := s.Now()
 	if err != nil && err != ErrNoElement {
 		return err
 	}
@@ -50,8 +61,8 @@ func cmdNow(fs FocusStore) error {
 	return nil
 }
 
-func cmdList(fs FocusStore) error {
-	results, err := fs.List()
+func cmdList(s Store) error {
+	results, err := s.List()
 	if err != nil {
 		return err
 	}
@@ -59,8 +70,8 @@ func cmdList(fs FocusStore) error {
 	return nil
 }
 
-func cmdStop(fs FocusStore) error {
-	return fs.Stop()
+func cmdStop(s Store) error {
+	return s.Stop()
 }
 
 func printElements(elements []Element) {
@@ -90,7 +101,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fs, err := NewFocusStore(path)
+	fs, err := NewSQLiteStore(path)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -103,6 +114,8 @@ func main() {
 		err = cmdList(fs)
 	case "today":
 		err = cmdToday(fs)
+	case "yesterday":
+		err = cmdYesterday(fs)
 	case "now":
 		err = cmdNow(fs)
 	case "stop":

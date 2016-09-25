@@ -15,7 +15,7 @@ func TestStop(t *testing.T) {
 
 	defer os.Remove(tmpfile.Name())
 
-	s, err := NewFocusStore(tmpfile.Name())
+	s, err := NewSQLiteStore(tmpfile.Name())
 	if err != nil {
 		t.Error(err)
 	}
@@ -54,7 +54,7 @@ func TestStart(t *testing.T) {
 
 	defer os.Remove(tmpfile.Name())
 
-	s, err := NewFocusStore(tmpfile.Name())
+	s, err := NewSQLiteStore(tmpfile.Name())
 	if err != nil {
 		t.Error(err)
 	}
