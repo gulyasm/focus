@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"errors"
 	"log"
 	"time"
 
@@ -9,6 +10,8 @@ import (
 )
 
 const ISO8601 = "2006-01-02 15:04:05.000 MST"
+
+var ErrNoElement = errors.New("No element found")
 
 type Element struct {
 	Id    int
@@ -105,6 +108,9 @@ func (fs FocusStore) Now() (Element, error) {
 	var start string
 	row := db.QueryRow("SELECT Id, Name, Start FROM Elements WHERE End=''")
 	if err = row.Scan(&e.Id, &e.Name, &start); err != nil {
+		if err == sql.ErrNoRows {
+			return e, ErrNoElement
+		}
 		return e, err
 	}
 	if start != "" {
@@ -156,6 +162,22 @@ func (fs FocusStore) List() ([]Element, error) {
 	}
 
 	return result, nil
+}
+
+func (fs FocusStore) Stop() error {
+	db, err := fs.open()
+	if err != nil {
+		return err
+	}
+	defer db.Close()
+
+	now := time.Now()
+
+	_, err = db.Exec("UPDATE Elements SET End=? WHERE END=''", now.Format(ISO8601))
+	if err != nil {
+		log.Println("Failed to update DB.", err.Error())
+	}
+	return err
 }
 
 func (fs FocusStore) Add(name string) error {

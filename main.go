@@ -22,7 +22,7 @@ func getDBPath() (string, error) {
 }
 
 func usage(err string) {
-	fmt.Println("Commands: add, list, today")
+	fmt.Println("Commands: add, list, today, yesterday, stop")
 	fmt.Println("Error: " + err)
 }
 
@@ -41,10 +41,12 @@ func cmdToday(fs FocusStore) error {
 
 func cmdNow(fs FocusStore) error {
 	result, err := fs.Now()
-	if err != nil {
+	if err != nil && err != ErrNoElement {
 		return err
 	}
-	fmt.Println(result.Name)
+	if err != ErrNoElement {
+		fmt.Println(result.Name)
+	}
 	return nil
 }
 
@@ -55,6 +57,10 @@ func cmdList(fs FocusStore) error {
 	}
 	printElements(results)
 	return nil
+}
+
+func cmdStop(fs FocusStore) error {
+	return fs.Stop()
 }
 
 func printElements(elements []Element) {
@@ -95,6 +101,8 @@ func main() {
 		err = cmdToday(fs)
 	case "now":
 		err = cmdNow(fs)
+	case "stop":
+		err = cmdStop(fs)
 	default:
 		usage("Command not found: " + cmd)
 		exit(2)
