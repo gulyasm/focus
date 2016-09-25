@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"errors"
 	"log"
 	"time"
 
@@ -18,6 +19,9 @@ type SQLiteStore struct {
 // provided path. The DB is initialized if it didn't exist before.
 // Already existing DB is not touched.
 func NewSQLiteStore(path string) (Store, error) {
+	if path == "" {
+		return SQLiteStore{}, errors.New("Empty path provided to SQLiteStore")
+	}
 	fs := SQLiteStore{path}
 	err := fs.initDB()
 	return fs, err

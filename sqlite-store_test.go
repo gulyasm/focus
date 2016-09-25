@@ -165,3 +165,10 @@ func TestNow(t *testing.T) {
 		t.Error("Now() returned err but which should have been ErrNoElement but wasn't", err)
 	}
 }
+
+func TestEmptyPath(t *testing.T) {
+	_, err := NewSQLiteStore("")
+	if err == nil {
+		t.Error("Empty path is not valid. NewSQLiteStore should have returned error")
+	}
+}
