@@ -17,6 +17,6 @@ func TestDBPath(t *testing.T) {
 	}
 	e := homeDir + "/.focus.db"
 	if s != e {
-		t.Error("getDBPath should be %v WAS: %v", e, s)
+		t.Errorf("getDBPath should be %v WAS: %v", e, s)
 	}
 }

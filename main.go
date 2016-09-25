@@ -139,7 +139,7 @@ func printElements(elements []Element) {
 }
 func main() {
 	if len(os.Args) < 2 {
-		usage("Missing cmd")
+		usage("Missing command")
 		exit(1)
 	}
 	path, err := getDBPath()
