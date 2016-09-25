@@ -70,7 +70,11 @@ func printElements(elements []Element) {
 
 	for _, r := range elements {
 		d := r.Duration()
-		table.AddRow(r.Name, d)
+		var tag string
+		if r.IsRunning() {
+			tag = " (R)"
+		}
+		table.AddRow(r.Name+tag, d)
 		td += d
 	}
 	fmt.Println(table.Render())

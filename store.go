@@ -27,6 +27,10 @@ func (e Element) Duration() time.Duration {
 	return e.End.Sub(e.Start)
 }
 
+func (e Element) IsRunning() bool {
+	return e.End.IsZero()
+}
+
 type FocusStore struct {
 	path string
 }
