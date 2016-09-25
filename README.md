@@ -1,7 +1,7 @@
 # ![](logo.png)
 ## Build
 ![](https://travis-ci.org/gulyasm/focus.svg?branch=master)
-
+![](https://goreportcard.com/badge/github.com/gulyasm/focus)
 ## Demo
 [![asciicast](https://asciinema.org/a/6qgy09x7uj8dy2ol0axsw8ybe.png)](https://asciinema.org/a/6qgy09x7uj8dy2ol0axsw8ybe)
 
