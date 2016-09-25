@@ -5,17 +5,42 @@
   <title>Focus</title>
   <!-- Google Fonts -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
-
   <!-- CSS Reset -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.css">
-
-  <!-- Milligram CSS minified -->
-  <link rel="stylesheet" href="milligram/dist/milligram.min.css">
+  <link rel="stylesheet" href="milligram.min.css">
+  <link rel="stylesheet" href="custom.css">
 
 </head>
 <body>
-  <img src="https://github.com/gulyasm/focus/raw/master/logo.png" alt="">
-  <h1>Install</h1>
-  <h1>Development</h1>
+  <div class="container">
+    <div class="row">
+      <div class="column column-50">
+        <img src="https://github.com/gulyasm/focus/raw/master/logo.png" alt="">
+      </div>
+      <div class="column column-50 menu">
+        <a href="https://github.com/gulyasm/focus">Github</a>
+      </div>
+    </div>
+    <h2>Focus</h2>
+    <h2>How to install?</h2>
+    <h3>Default installation<small> - Currently not available</small></h3>
+    Download and install the binaries.
+    <ul>
+      <li><a href="">Windows</a></li>
+      <li><a href="">Linux</a></li>
+      <li><a href="">OS X</a></li>
+    </ul>
+    <h3>Install from source</h3>
+    If you have go installed you can install with go install.
+    </br>
+    <code>
+    go install github.com/gulyasm/focus
+    </code>
+    <hr/>
+
+    <h2>Development</h2>
+    <h3>Build status</h3>
+    <img src="https://travis-ci.org/gulyasm/focus.svg?branch=master" alt="">
+  </div>
 </body>
 </html>
