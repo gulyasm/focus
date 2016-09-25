@@ -34,6 +34,13 @@ If you have go installed you can install with go install.
 ```bash
 go install github.com/gulyasm/focus
 ```
+
+## Integrations
+### tmux
+To add your current running element to the right side of your tmux status bar, add the following line to your `tmux.conf`.
+```
+set-option -g status-right '⤇ #(focus now)'
+```
 ## Development
 `Vagrantfile` is provided for development. To run it:
 ```bash
