@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestAdd(t *testing.T) {
+func TestStart(t *testing.T) {
 	tmpfile, err := ioutil.TempFile("", "test.db")
 	if err != nil {
 		log.Fatal(err)
@@ -19,7 +19,7 @@ func TestAdd(t *testing.T) {
 	if err != nil {
 		t.Error(err)
 	}
-	err = s.Add("Hello")
+	err = s.Start("Hello")
 	if err != nil {
 		t.Error(err)
 	}
@@ -31,8 +31,10 @@ func TestAdd(t *testing.T) {
 		t.Error(err)
 	}
 	if r[0].Name != "Hello" {
-		t.Error("Added element doesn't match with expected. Expected: %s, actual: %s\n",
+		t.Errorf("Added element doesn't match with expected. Expected: %s, actual: %s\n",
 			"Hello", r[0].Name)
 	}
-
+	if !r[0].IsRunning() {
+		t.Error("IsRunning returned false for an expected running element")
+	}
 }
