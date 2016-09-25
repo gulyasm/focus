@@ -1,4 +1,5 @@
-# Focus
+# ![](logo.png)
+## Build
 ![](https://travis-ci.org/gulyasm/focus.svg?branch=master)
 ## Usage
  - `focus add "Coding kernel-bug"`
