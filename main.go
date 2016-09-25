@@ -10,7 +10,7 @@ import (
 	"github.com/apcera/termtables"
 )
 
-const DEFAULT_DB_NAME = "focus.db"
+const DEFAULT_DB_NAME = ".focus.db"
 
 func getDBPath() (string, error) {
 	u, err := user.Current()
