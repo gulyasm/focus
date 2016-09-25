@@ -1,6 +1,11 @@
 # ![](logo.png)
 ## Build
 ![](https://travis-ci.org/gulyasm/focus.svg?branch=master)
+
+## Demo
+[![asciicast](https://asciinema.org/a/6qgy09x7uj8dy2ol0axsw8ybe.png)](https://asciinema.org/a/6qgy09x7uj8dy2ol0axsw8ybe)
+
+
 ## Usage
  - `focus start "Coding kernel-bug"`
 
